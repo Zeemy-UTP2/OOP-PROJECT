@@ -11,7 +11,7 @@ namespace CinemaBookingLib
         public int Number {get; private set; }
 
         // Combined ID e.gF12
-        public string SeatID
+        public string SeatId
         {
             get { return Row.ToString() + Number; }
 
