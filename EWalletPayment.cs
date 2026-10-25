@@ -3,8 +3,8 @@ using System.Globalization;
 
 namespace CinemaBookingLib
 {
-    // This class simulates an e-wallet payment for our assignment.
-    // It does not connect to GrabPay or another real payment provider.
+    // This class simulates an e-wallet payment 
+
     public class EWalletPayment : IPaymentMethod
     {
         private bool hasWalletDetails;
