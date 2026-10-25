@@ -3,8 +3,8 @@ using System.Globalization;
 
 namespace CinemaBookingLib
 {
-    // This is a simple card-payment simulation for our assignment.
-    // It does not connect to a bank or charge a real card.
+    // This is a simple card-payment simulation 
+    
     public class CardPayment : IPaymentMethod
     {
         private string lastFourDigits;
