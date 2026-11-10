@@ -26,8 +26,12 @@ namespace CinemaBookingLib
         {
             get
             {
-                // TODO: add up the Price of every ticket
-                return 0m;
+                decimal total = 0m;
+                foreach (Ticket ticket in tickets)
+                {
+                    total = total + ticket.Price;
+                }
+                return total;
             }
         }
 
@@ -40,22 +44,54 @@ namespace CinemaBookingLib
             Status = BookingStatus.Pending;
             BookingTime = DateTime.Now;
             tickets = new List<Ticket>();
-            // TODO: create one Ticket for each seat using seat.CalculatePrice(showtime.BasePrice)
+
+            // One ticket for each seat. Each seat type works out its own price (polymorphism).
+            foreach (Seat seat in seats)
+            {
+                string code = bookingId + "-" + seat.SeatId;
+                decimal price = seat.CalculatePrice(showtime.BasePrice);
+                tickets.Add(new Ticket(code, seat, price));
+            }
         }
 
         // Pays for the booking. Returns true if the payment worked.
         public bool Confirm(IPaymentMethod payment)
         {
-            // TODO: call payment.ProcessPayment(TotalAmount), then set Payment and Status = Confirmed
-            return false;
+            if (Status != BookingStatus.Pending)
+            {
+                throw new InvalidOperationException("Booking " + BookingId + " is already " + Status + ".");
+            }
+
+            bool paid = payment.ProcessPayment(TotalAmount);
+            if (paid)
+            {
+                Payment = payment;
+                Status = BookingStatus.Confirmed;
+            }
+            return paid;
         }
 
         // Cancels the booking, frees the seats and refunds the money
         public void Cancel()
         {
-            // TODO: refund if Confirmed, call Showtime.ReleaseSeats, set Status = Cancelled
+            if (Status == BookingStatus.Cancelled)
+            {
+                throw new InvalidOperationException("Booking " + BookingId + " is already cancelled.");
+            }
+
+            if (Status == BookingStatus.Confirmed && Payment != null)
+            {
+                Payment.Refund(TotalAmount);
+            }
+
+            List<Seat> seats = new List<Seat>();
+            foreach (Ticket ticket in tickets)
+            {
+                seats.Add(ticket.Seat);
+            }
+            Showtime.ReleaseSeats(seats);
+
+            Status = BookingStatus.Cancelled;
         }
     }
 }
-
-//test branch

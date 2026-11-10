@@ -17,8 +17,7 @@ namespace CinemaBookingLib
         // Example output: "B1-E3 | E3 (Premium) | RM 22.50"
         public override string ToString()
         {
-            // TODO: show ticket code, seat, seat type and price
-            return TicketCode;
+            return TicketCode + " | " + Seat.SeatId + " (" + Seat.GetSeatTypeName() + ") | RM " + Price.ToString("F2");
         }
     }
 }

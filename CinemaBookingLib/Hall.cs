@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace CinemaBookingLib
@@ -21,8 +22,12 @@ namespace CinemaBookingLib
         {
             get
             {
-                // TODO: add up Capacity of every seat
-                return 0;
+                int total = 0;
+                foreach (Seat seat in seats)
+                {
+                    total = total + seat.Capacity;
+                }
+                return total;
             }
         }
 
@@ -33,16 +38,26 @@ namespace CinemaBookingLib
             seats = new List<Seat>();
         }
 
+        // Adds a seat. Two seats cannot have the same SeatId.
         public void AddSeat(Seat seat)
         {
-            // TODO: do not allow two seats with the same SeatId
+            if (GetSeat(seat.SeatId) != null)
+            {
+                throw new ArgumentException("Seat " + seat.SeatId + " already exists in " + Name + ".");
+            }
             seats.Add(seat);
         }
 
         // Finds a seat by its id, for example "F12". Returns null if not found.
         public Seat GetSeat(string seatId)
         {
-            // TODO: loop through seats and return the matching one
+            foreach (Seat seat in seats)
+            {
+                if (seat.SeatId == seatId)
+                {
+                    return seat;
+                }
+            }
             return null;
         }
     }
