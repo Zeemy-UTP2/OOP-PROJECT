@@ -531,6 +531,20 @@ namespace CinemaBookingGUI
                 return;
             }
 
+            if (rdoCard.Checked)
+            {
+                if (txtCardName.Text.Trim() == "")
+                {
+                    ShowWarning("Please enter the card holder name.");
+                    return;
+                }
+                if (HasNumber(txtCardName.Text))
+                {
+                ShowWarning("Card holder name cannot contain numbers.");
+                    return;
+                }
+        }
+
             customerCounter++;
             Customer customer = new Customer("C" + customerCounter, txtName.Text.Trim(),
                                              txtEmail.Text.Trim(), (int)numAge.Value);
