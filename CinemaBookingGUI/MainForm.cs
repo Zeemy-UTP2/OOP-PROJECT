@@ -544,6 +544,15 @@ namespace CinemaBookingGUI
                     return;
                 }
         }
+        // Check the e-wallet phone number before booking
+            if (rdoWallet.Checked)
+            {
+                if (!IsValidPhone(txtPhone.Text))
+                {
+                    ShowWarning("Please enter a valid phone number, for example 012-3456789.");
+                    return;
+                }
+            }
 
             customerCounter++;
             Customer customer = new Customer("C" + customerCounter, txtName.Text.Trim(),
@@ -722,6 +731,30 @@ namespace CinemaBookingGUI
                 }
             }
             return false;
+        }
+
+                // A Malaysian mobile number: starts with 01 and has 10 or 11 digits.
+        // Dashes and spaces are allowed, e.g. "012-3456789" or "011 2345 6789".
+        private bool IsValidPhone(string phone)
+        {
+            string digits = phone.Replace("-", "").Replace(" ", "");
+
+            if (digits.Length < 10 || digits.Length > 11)
+            {
+                return false;
+            }
+            if (!digits.StartsWith("01"))
+            {
+                return false;
+            }
+            foreach (char c in digits)
+            {
+                if (!char.IsDigit(c))
+                {
+                    return false;
+                }
+            }
+            return true;
         }
 
         private string RatingText(AgeRating rating)
