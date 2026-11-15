@@ -711,6 +711,19 @@ namespace CinemaBookingGUI
             return text;
         }
 
+        // Returns true if the text has at least one digit (0-9) in it
+        private bool HasNumber(string text)
+        {
+            foreach (char c in text)
+            {
+                if (char.IsDigit(c))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         private string RatingText(AgeRating rating)
         {
             if (rating == AgeRating.Plus18)
